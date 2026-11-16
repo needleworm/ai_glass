@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 스마트 안경 및 초소형 장비 악용 실태와 글로벌 대응 전략 (20 Slides)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #f8fafc;
+      --bg-card: #ffffff;
+      --border-card: #e2e8f0;
+      --border-accent: #cbd5e1;
+      --primary: #2563eb;
+      --primary-light: #eff6ff;
+      --primary-hover: #1d4ed8;
+      --accent: #0284c7;
+      --accent-light: #f0f9ff;
+      --danger: #dc2626;
+      --danger-light: #fef2f2;
+      --warning: #d97706;
+      --warning-light: #fffbeb;
+      --success: #16a34a;
+      --success-light: #f0fdf4;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-sub: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      background-image: 
+        radial-gradient(circle at 10% 10%, rgba(37, 99, 235, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(2, 132, 199, 0.05) 0%, transparent 40%),
+        linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    }
+
+    /* Deck Layout */
+    .deck-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 48px 75px 75px 75px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px) scale(0.985);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+      z-index: 2;
+    }
+
+    /* Headers & Meta */
+    .slide-header {
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: var(--primary-light);
+      border: 1px solid #bfdbfe;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--primary);
+      width: fit-content;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .badge.danger {
+      background: var(--danger-light);
+      border-color: #fecaca;
+      color: var(--danger);
+    }
+
+    .badge.warning {
+      background: var(--warning-light);
+      border-color: #fde68a;
+      color: var(--warning);
+    }
+
+    .badge.success {
+      background: var(--success-light);
+      border-color: #bbf7d0;
+      color: var(--success);
+    }
+
+    .slide-title {
+      font-size: 2.1rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.25;
+      color: #0f172a;
+    }
+
+    .slide-subtitle {
+      font-size: 0.98rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    /* Content Area */
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+      min-height: 0;
+    }
+
+    /* Grids */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      height: 100%;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      height: 100%;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .grid-1-2 {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 20px;
+      height: 100%;
+    }
+
+    /* White & Crisp Cards */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 14px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: #cbd5e1;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--primary);
+    }
+
+    .card.danger::before { background: var(--danger); }
+    .card.warning::before { background: var(--warning); }
+    .card.accent::before { background: var(--accent); }
+    .card.success::before { background: var(--success); }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #0f172a;
+    }
+
+    .card-desc {
+      font-size: 0.92rem;
+      color: #475569;
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .card-footer {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-card);
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-muted);
+    }
+
+    /* Metric Counters */
+    .metric-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2.3rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .metric-val.blue { color: var(--primary); }
+    .metric-val.red { color: var(--danger); }
+    .metric-val.yellow { color: var(--warning); }
+    .metric-val.cyan { color: var(--accent); }
+
+    .metric-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Tables */
+    .table-container {
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: 12px;
+      overflow-y: auto;
+      max-height: 100%;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th {
+      background: #f1f5f9;
+      padding: 12px 16px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: #1e293b;
+      border-bottom: 2px solid var(--border-card);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    td {
+      padding: 12px 16px;
+      font-size: 0.86rem;
+      color: #334155;
+      border-bottom: 1px solid var(--border-card);
+      vertical-align: middle;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #fafafa; }
+    tr:hover td { background: #f0f7ff; }
+
+    /* Interactive Links */
+    a.link-source {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(37, 99, 235, 0.08);
+      transition: all 0.2s;
+    }
+    a.link-source:hover {
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+    }
+    a.link-source svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    /* Pipeline Component */
+    .pipeline-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 18px 14px;
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    }
+
+    .pipeline-step {
+      flex: 1;
+      background: #f8fafc;
+      border: 1px solid var(--border-card);
+      border-radius: 10px;
+      padding: 14px 10px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pipeline-step .step-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pipeline-step .step-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .pipeline-step .step-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .pipeline-step .step-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    .pipeline-arrow {
+      color: var(--primary);
+      font-size: 1.2rem;
+      font-weight: 700;
+      opacity: 0.6;
+    }
+
+    /* SVG Illustration Container */
+    .svg-illus-box {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      border: 1px solid var(--border-card);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+    }
+
+    .svg-illus-box svg {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    /* Cover Slide Styling */
+    .cover-content {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      max-width: 950px;
+    }
+
+    .cover-title {
+      font-size: 3.3rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.18;
+      margin-bottom: 20px;
+      color: #0f172a;
+    }
+
+    .cover-desc {
+      font-size: 1.3rem;
+      color: #475569;
+      line-height: 1.6;
+      margin-bottom: 35px;
+    }
+
+    .cover-meta {
+      display: flex;
+      gap: 30px;
+      padding-top: 20px;
+      border-top: 2px solid var(--border-card);
+      width: 100%;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .meta-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .meta-val {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    /* Controls Bar */
+    .controls-bar {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      border: 1px solid #cbd5e1;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      z-index: 100;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-nav {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-nav:hover {
+      background: #f1f5f9;
+      color: var(--text-main);
+    }
+
+    .page-indicator {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .page-indicator span.total {
+      color: var(--text-muted);
+    }
+
+    .btn-fullscreen {
+      background: var(--primary-light);
+      border: 1px solid #bfdbfe;
+      color: var(--primary);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-fullscreen:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Progress Bar */
+    .progress-bar-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: #e2e8f0;
+      z-index: 101;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transition: width 0.3s ease;
+    }
+
+    .kbd-hint {
+      position: fixed;
+      bottom: 24px;
+      right: 28px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      z-index: 90;
+    }
+
+    kbd {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: #334155;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <div class="deck-container">
+
+    <!-- ==================== SLIDE 01: COVER ==================== -->
+    <section class="slide active" id="slide-1">
+      <div class="cover-content">
+        <div class="badge">SECURITY & POLICY BRIEFING 2026</div>
+        <h1 class="cover-title">AI 스마트 안경 및 초소형 장비 악용 실태와<br>글로벌 치팅(Cheating) 대응 전략</h1>
+        <p class="cover-desc">
+          초소형 핀홀 카메라, 고막 밀착형 자석 이어폰, 멀티모달 LLM이 결합된<br>
+          <strong>‘2.5초 완전 자동화 치팅 파이프라인’</strong>의 위협 분석과 국내외 대응 및 평가 혁신 방안
+        </p>
+        <div class="cover-meta">
+          <div class="meta-item">
+            <span class="meta-label">Prepared By</span>
+            <span class="meta-val">AI 보안·정책 연구 Task Force</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Date</span>
+            <span class="meta-val">2026. 11. 16</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Format</span>
+            <span class="meta-val">20-Slide Interactive Web Presentation</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 02: TABLE OF CONTENTS ==================== -->
+    <section class="slide" id="slide-2">
+      <div class="slide-header">
+        <div class="badge">AGENDA</div>
+        <h2 class="slide-title">목차 (Table of Contents)</h2>
+        <p class="slide-subtitle">4대 핵심 영역 총 20개 슬라이드로 구성된 종합 보고 체계</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-4">
+          <div class="card">
+            <div class="card-title">Part I. 실태 & 위협 개요</div>
+            <p class="card-desc">
+              03. 핵심 요약 (Executive Summary)<br>
+              04. AI 치팅 위협 진화 3단계<br>
+              05. 하드웨어의 비가시화 혁신
+            </p>
+          </div>
+          <div class="card danger">
+            <div class="card-title">Part II. 글로벌 실제 사례</div>
+            <p class="card-desc">
+              06. 튀르키예 YKS ChatGPT 치팅<br>
+              07. 태국 랑싯대 & 중국 가오카오<br>
+              08. I-XRAY 실시간 신원 스캔<br>
+              09. 카지노 도박 & 불법 촬영
+            </p>
+          </div>
+          <div class="card warning">
+            <div class="card-title">Part III. 기술 & 암시장</div>
+            <p class="card-desc">
+              10. 2.5초 자동화 치팅 파이프라인<br>
+              11. 고막 자석 이어폰 메커니즘<br>
+              12. 스마트 안경 스펙 & 가격 비교<br>
+              13. 특수 치팅 장비 유통 & 링크
+            </p>
+          </div>
+          <div class="card accent">
+            <div class="card-title">Part IV. 대응 & 전략 제언</div>
+            <p class="card-desc">
+              14. 주요국 형사처벌 및 규제<br>
+              15. 전파 차단 & 탐지의 기술적 한계<br>
+              16. 오프라인 회귀 & 구술시험 부활<br>
+              17. AI 전제형 평가 혁신<br>
+              18. 대한민국 3대 정책 제언<br>
+              19. 검사 프로토콜 실행 로드맵<br>
+              20. 결언 및 Q&A
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 03: EXECUTIVE SUMMARY ==================== -->
+    <section class="slide" id="slide-3">
+      <div class="slide-header">
+        <div class="badge">EXECUTIVE SUMMARY</div>
+        <h2 class="slide-title">핵심 요약 (Executive Summary)</h2>
+        <p class="slide-subtitle">초소형화된 특수 장비와 LLM의 결합으로 기존 시험 감독 체계의 무력화 직면</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="card danger">
+            <div class="card-title">1. 초저지연 완전 자동화</div>
+            <div class="metric-val red">2.5s</div>
+            <div class="metric-sub">문제 촬영부터 정답 수신까지</div>
+            <p class="card-desc" style="margin-top: 10px;">
+              인간 조력자 없이 카메라 안경 + GPT-4o Vision API + 고막 자석 이어폰 연동을 통해 <strong>완전 자동화 치팅</strong> 달성.
+            </p>
+            <div class="card-footer"><span>0dB 무음 전달</span><span>RF 탐지 회피</span></div>
+          </div>
+          <div class="card warning">
+            <div class="card-title">2. 암시장 직구 접근성</div>
+            <div class="metric-val yellow">$85 ~</div>
+            <div class="metric-sub">단추카메라+자석이어폰 풀세트</div>
+            <p class="card-desc" style="margin-top: 10px;">
+              알리 등 해외 직구 플랫폼을 통해 <strong>10~20만 원대</strong>에 특수 장비 풀세트가 무인증 직구로 국내 무차별 유입.
+            </p>
+            <div class="card-footer"><span>전파법 사각지대</span><span>통관 목록 제외</span></div>
+          </div>
+          <div class="card accent">
+            <div class="card-title">3. 글로벌 대응의 패러다임</div>
+            <div class="metric-val cyan">10년 / 16억</div>
+            <div class="metric-sub">인도 2024 시험법 최고 형량/벌금</div>
+            <p class="card-desc" style="margin-top: 10px;">
+              사법적 초강경 처벌과 함께 지필평가를 탈피하고 <strong>대면 구술 면접(Viva Voce) 및 AI 전제형 평가</strong>로 전환.
+            </p>
+            <div class="card-footer"><span>손글씨 회귀</span><span>검이경 귓속검사</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 04: CHEATING EVOLUTION ==================== -->
+    <section class="slide" id="slide-4">
+      <div class="slide-header">
+        <div class="badge">TREND ANALYSIS</div>
+        <h2 class="slide-title">시험 치팅(부정행위)의 3세대 진화 과정</h2>
+        <p class="slide-subtitle">아날로그 커닝페이퍼에서 초저지연 클라우드 AI 자동화로의 패러다임 전환</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-title">1세대: 아날로그 / 단순 무선</div>
+            <div class="badge" style="margin-bottom:10px;">과거 ~ 2015년</div>
+            <p class="card-desc">
+              • 커닝페이퍼 메모 은닉<br>
+              • 무선 무전기 / 핸드폰 진동 코드 송수신<br>
+              • <strong>한계:</strong> 전달 가능한 정보량이 극소수이며, 종이/핸드폰 소지 적발 확률 매우 높음.
+            </p>
+            <div class="card-footer"><span>단순 텍스트/신호</span><span>육안 적발 용이</span></div>
+          </div>
+          <div class="card warning">
+            <div class="card-title">2세대: 대리 시험 & 외부 조력</div>
+            <div class="badge warning" style="margin-bottom:10px;">2016년 ~ 2022년</div>
+            <p class="card-desc">
+              • 스파이 안경/단추 카메라 촬영<br>
+              • 외부 학원 강사팀 문제 풀이<br>
+              • 스마트워치/인이어로 정답 전송<br>
+              • <strong>한계:</strong> 외부 전문 인력 섭외 비용 수천만 원 소요, 통신 지연(5~15분).
+            </p>
+            <div class="card-footer"><span>인간 조력자 필수</span><span>고비용(수천만 원)</span></div>
+          </div>
+          <div class="card danger">
+            <div class="card-title">3세대: 실시간 생성형 AI 자동화</div>
+            <div class="badge danger" style="margin-bottom:10px;">2023년 ~ 현재 (위협 극대화)</div>
+            <p class="card-desc">
+              • 고해상도 시선 일치 영상 캡처<br>
+              • <strong>멀티모달 LLM 실시간 이미지 추론</strong><br>
+              • TTS $\rightarrow$ 2mm 고막 자석 유도 진동<br>
+              • <strong>특징:</strong> 조력자 불필요, 2.5초 만에 완료, 장비 비용 10만 원대.
+            </p>
+            <div class="card-footer"><span>100% 자동화</span><span>2.5초 초저지연</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 05: HARDWARE INVISIBILITY ==================== -->
+    <section class="slide" id="slide-5">
+      <div class="slide-header">
+        <div class="badge danger">THREAT VECTOR</div>
+        <h2 class="slide-title">하드웨어의 비가시화: 왜 눈으로 볼 수 없는가?</h2>
+        <p class="slide-subtitle">일반 안경, 셔츠 단추, 고막 안착 자석으로 위장되어 육안 식별 불가</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-1-2">
+          <div class="svg-illus-box">
+            <svg viewBox="0 0 400 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="400" height="320" rx="12" fill="#f8fafc"/>
+              <path d="M70 110 C90 80, 160 80, 180 110 C190 125, 175 145, 125 145 C75 145, 60 125, 70 110 Z" stroke="#334155" stroke-width="6" fill="#e2e8f0"/>
+              <path d="M220 110 C240 80, 310 80, 330 110 C340 125, 325 145, 275 145 C225 145, 210 125, 220 110 Z" stroke="#334155" stroke-width="6" fill="#e2e8f0"/>
+              <path d="M180 105 Q200 95 220 105" stroke="#334155" stroke-width="6" fill="none"/>
+              <circle cx="200" cy="102" r="5" fill="#dc2626"/>
+              <circle cx="200" cy="102" r="2" fill="#ffffff"/>
+              <text x="210" y="85" font-family="Pretendard" font-size="11" font-weight="bold" fill="#dc2626">1mm 핀홀 렌즈</text>
+              <path d="M90 230 C90 190, 140 180, 160 210 C180 240, 150 280, 110 270" stroke="#94a3b8" stroke-width="4" stroke-dasharray="4 4" fill="none"/>
+              <rect x="155" y="215" width="10" height="14" rx="3" fill="#2563eb"/>
+              <text x="175" y="226" font-family="Pretendard" font-size="12" font-weight="bold" fill="#2563eb">2mm 나노 자석 (고막 밀착)</text>
+              <text x="175" y="242" font-family="Pretendard" font-size="10" fill="#64748b">외부에 노출 0mm, 전선/배터리 없음</text>
+              <ellipse cx="200" cy="285" rx="130" ry="22" stroke="#d97706" stroke-width="3" stroke-dasharray="6 4" fill="none"/>
+              <text x="135" y="305" font-family="Pretendard" font-size="11" font-weight="bold" fill="#d97706">목걸이형 유도 넥루프 (옷 안감 은닉)</text>
+            </svg>
+          </div>
+          <div class="card">
+            <div class="card-title">3대 은닉 요소 분석</div>
+            <div style="display: flex; flex-direction: column; gap: 14px; margin-top: 8px;">
+              <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border-left: 4px solid var(--primary);">
+                <strong>1. 1mm 핀홀 렌즈 (Pinhole Camera):</strong><br>
+                안경 브릿지, 힌지(경첩), 또는 실제 셔츠 단추 캡 뒤에 가려져 있어 30cm 이내에서 정밀 확대경으로 보지 않는 한 육안 식별 불가능.
+              </div>
+              <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border-left: 4px solid var(--danger);">
+                <strong>2. 패시브 2~3mm 나노 자석 이어폰 (Tympanic Magnet):</strong><br>
+                배터리, 칩셋, 전선이 전혀 없는 쌀알 크기 네오디뮴 자석. 외이도 깊숙이 넣어 고막 표면에 직접 부착하므로 귀를 들여다봐도 보이지 않음.
+              </div>
+              <div style="background: #f8fafc; padding: 12px; border-radius: 8px; border-left: 4px solid var(--warning);">
+                <strong>3. 의류 안감 유도 루프 (Induction Neckloop):</strong><br>
+                와이셔츠 칼라나 목걸이 형태로 착용하며 미세 전자기장을 방출하여 고막 자석을 직접 진동시킴 (외부 누설음 0dB).
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 06: CASE TURKEY YKS ==================== -->
+    <section class="slide" id="slide-6">
+      <div class="slide-header">
+        <div class="badge danger">INCIDENT STUDY 01</div>
+        <h2 class="slide-title">튀르키예 대입(YKS) ChatGPT 실시간 치팅 사건</h2>
+        <p class="slide-subtitle">2024년 6월 이스파르타(Isparta) 고사장에서 발생한 전 세계 최초 AI 연동 체포 사건</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card danger">
+            <div class="card-title">사건 개요 및 적발 영상 바이럴</div>
+            <p class="card-desc" style="line-height: 1.7;">
+              • <strong>시험명:</strong> 튀르키예 고등교육기관 입학시험 (YKS-TYT)<br>
+              • <strong>수법:</strong> 수험생이 셔츠 단추형 핀홀 카메라로 시험지 촬영 $\rightarrow$ <strong>운동화 밑창을 파내어 숨긴 Wi-Fi 라우터</strong>로 스마트폰 모바일 테더링 $\rightarrow$ OpenAI ChatGPT로 전송 $\rightarrow$ 귓속 자석 이어폰으로 정답 수신.<br>
+              • <strong>적발:</strong> 수험생의 부자연스러운 행동을 수상히 여긴 시험관이 경찰에 인계. 경찰관이 압수한 장비를 책상에 두고 ChatGPT가 실시간으로 문제를 푸는 시연 영상이 전 세계 언론에 대대적 보도됨.
+            </p>
+            <div class="card-footer">
+              <span>수험생 및 외부 조력자 전원 구속 기소</span>
+              <a href="https://apnews.com/article/turkey-exam-cheating-ai-chatgpt-b4975f284e3d3ddfbe8e4fcfa2e247b9" target="_blank" class="link-source">
+                AP News 출처
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">기술적 특징 및 시사점</div>
+            <div style="display:flex; flex-direction:column; gap:12px; margin-top:6px;">
+              <div style="background:#f1f5f9; padding:12px; border-radius:8px;">
+                <strong>신발 밑창 모뎀 은닉:</strong><br>
+                신체 수색 시 신발 내부까지 스캔하지 않는 현행 금속탐지기 보안 프로토콜의 취약점 악용.
+              </div>
+              <div style="background:#f1f5f9; padding:12px; border-radius:8px;">
+                <strong>ChatGPT 멀티모달 추론:</strong><br>
+                문자 인식(OCR) 과정 없이 이미지를 직접 주입하여 수식과 다이어그램까지 3초 이내에 자동 풀이 성공.
+              </div>
+              <div style="background:#fef2f2; padding:12px; border-radius:8px; border:1px solid #fecaca;">
+                <strong style="color:var(--danger);">경찰 공식 입장:</strong><br>
+                "사상 처음으로 인공지능이 인간의 개입 없이 시험지를 직접 풀어 수험생에게 답을 알려준 범죄"로 규정.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 07: CASE THAILAND & CHINA ==================== -->
+    <section class="slide" id="slide-7">
+      <div class="slide-header">
+        <div class="badge danger">INCIDENT STUDY 02</div>
+        <h2 class="slide-title">태국 랑싯대 의대 스캔들 & 중국 가오카오 조직 치팅</h2>
+        <p class="slide-subtitle">영화 《배드 지니어스》의 실화 모티브와 중국의 안경 전수 검사 사태</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">
+              태국 랑싯대학교(Rangsit) 의대 입시 (실화)
+            </div>
+            <p class="card-desc" style="line-height: 1.7;">
+              • <strong>수법:</strong> 대리 응시자 3명이 카메라가 내장된 '스파이 안경'을 쓰고 입실. 시험 시작 45분 후 조기 퇴실하여 시험지 영상 유출.<br>
+              • <strong>외부 풀이:</strong> 입시학원 전문팀이 문제를 풀고, 시험장에 남아있던 실제 수험생들의 <strong>스마트워치</strong>로 무선 전송.<br>
+              • <strong>대가:</strong> 합격 시 1인당 80만~85만 바트(약 3,000만 원).<br>
+              • <strong>조치:</strong> 3,000여 명 시험 전면 취소 및 전원 블랙리스트 등재.
+            </p>
+            <div class="card-footer">
+              <span>영화 《배드 지니어스》 모티브 사건</span>
+              <a href="https://www.bbc.com/news/world-asia-36254756" target="_blank" class="link-source">
+                BBC News 기사
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">
+              중국 가오카오(高考) 안경 전수 검사
+            </div>
+            <p class="card-desc" style="line-height: 1.7;">
+              • 안경테 경첩에 1mm 핀홀 렌즈와 무선 안테나를 결합한 치팅 조직 적발 증가.<br>
+              • <strong>극단적 보안 조치:</strong><br>
+              - 광둥, 산둥 등 주요 성에서 <strong>'수험생 안경 전수 탈의 검사'</strong> 의무화.<br>
+              - 고사장 상공에 <strong>무선 신호 추적 드론</strong> 투입.<br>
+              - 형법 제284조 적용: 조직 치팅 적발 시 <strong>최고 징역 7년</strong> 선고.
+            </p>
+            <div class="card-footer">
+              <span>국가시험 치팅죄 형법 신설</span>
+              <a href="http://english.court.gov.cn" target="_blank" class="link-source">
+                중국 최고인민법원 판례
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 08: CASE HARVARD I-XRAY ==================== -->
+    <section class="slide" id="slide-8">
+      <div class="slide-header">
+        <div class="badge danger">PRIVACY CRISIS</div>
+        <h2 class="slide-title">하버드대 ‘I-XRAY’: 2초 만의 실시간 신원조회(Doxing)</h2>
+        <p class="slide-subtitle">상용 안경과 공개 AI 엔진의 결합으로 보행형 실시간 감시 스토킹 무기화 입증</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card danger">
+            <div class="card-title">프로젝트 개요 (2024년 10월)</div>
+            <p class="card-desc" style="line-height: 1.7;">
+              하버드대 학생 AnhPhu Nguyen과 Caine Ardayfio가 <strong>시판용 Meta Ray-Ban 스마트 안경</strong>을 해킹 없이 일반 공개 툴과 연동하여 개발.<br><br>
+              지하철이나 길거리에서 <strong>처음 보는 행인을 쳐다보는 것만으로 불과 2초 만에</strong> 상대방의 이름, 집 주소, 전화번호, 부모 이름, 직장 정보가 안경 오픈이어 스피커로 전달됨.
+            </p>
+            <div class="card-footer">
+              <span>$300 상용 안경으로 실시간 스토킹 구현</span>
+              <a href="https://github.com/cphun/I-XRAY" target="_blank" class="link-source">
+                GitHub 공개 자료
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">I-XRAY 데이터 처리 파이프라인</div>
+            <div style="display:flex; flex-direction:column; gap:10px; margin-top:8px;">
+              <div style="background:#f8fafc; padding:10px; border-radius:6px; border-left:3px solid var(--primary);">
+                <strong>1. 인스타그램 라이브 스트리밍:</strong> 안경 카메라 영상을 PC로 실시간 미러링
+              </div>
+              <div style="background:#f8fafc; padding:10px; border-radius:6px; border-left:3px solid var(--accent);">
+                <strong>2. PimEyes 안면인식:</strong> 웹 전역에서 동일 인물 사진 역추적 크롤링
+              </div>
+              <div style="background:#f8fafc; padding:10px; border-radius:6px; border-left:3px solid var(--warning);">
+                <strong>3. FastPeopleSearch 공공 DB:</strong> 역추적된 이름으로 주소/전화번호 추출
+              </div>
+              <div style="background:#f8fafc; padding:10px; border-radius:6px; border-left:3px solid var(--danger);">
+                <strong>4. LLM 요약 & 음성 출력:</strong> 텍스트 정리 후 귓속으로 오디오 피드백
+              </div>
+            </div>
+            <div class="card-footer">
+              <span>촬영 알림 LED는 절연 테이핑으로 완전 무력화</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 09: CASE CASINO & VOYEURISM ==================== -->
+    <section class="slide" id="slide-9">
+      <div class="slide-header">
+        <div class="badge danger">CASINO & VOYEURISM</div>
+        <h2 class="slide-title">카지노 포커 사기 & 다중이용시설 불법 촬영</h2>
+        <p class="slide-subtitle">게임 이론 최적(GTO) 알고리즘 도박 사기와 피트니스·욕실 도촬 범죄</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">1. 카지노 포커 분석기 연동 사기</div>
+            <p class="card-desc" style="line-height: 1.7;">
+              • <strong>적외선(IR) 마킹 카드:</strong> 육안으로 보이지 않는 적외선 잉크로 마킹된 카드 뒷면을 적외선 광학 필터 안경으로 투시.<br>
+              • <strong>포커 분석기(Poker Analyzer):</strong> 카드 측면 바코드를 카메라로 스캔 $\rightarrow$ 몬테카를로 시뮬레이션 알고리즘이 0.1초 만에 최적 승률(GTO)을 연산해 인이어로 피드백.<br>
+              • <strong>규제:</strong> 네바다주 및 마카오 카지노 테이블 내 스마트 안경 반입 영구 금지.
+            </p>
+            <div class="card-footer">
+              <span>카지노 영구 출입 금지 조치</span>
+              <a href="https://gaming.nv.gov" target="_blank" class="link-source">
+                네바다 게이밍 관리국
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">2. 피트니스·공용 욕실 불법 촬영</div>
+            <p class="card-desc" style="line-height: 1.7;">
+              • <strong>싱가포르 공용 욕실 사건:</strong> 온라인에서 $40에 구매한 핀홀 안경을 선반에 거치하여 룸메이트 도촬 $\rightarrow$ 징역 15주형 선고.<br>
+              • <strong>美 피트니스 체인 규제:</strong> Equinox, Planet Fitness 등 대형 헬스장에서 락커룸 및 운동 구역 내 스마트 안경 착용 전면 금지.<br>
+              • <strong>하드웨어 해킹 키트:</strong> 메타의 LED 차단 감지 펌웨어를 속이는 천공 편광 스티커가 암거래 시장에서 활발히 유통.
+            </p>
+            <div class="card-footer">
+              <span>하드웨어 LED 차단 스티커 암유통</span>
+              <a href="https://www.straitstimes.com/singapore/courts-crime/man-who-used-spy-glasses-to-film-housemate-in-bathroom-jailed" target="_blank" class="link-source">
+                Straits Times 기사
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 10: 2.5s PIPELINE ==================== -->
+    <section class="slide" id="slide-10">
+      <div class="slide-header">
+        <div class="badge">TECHNICAL DEEP DIVE</div>
+        <h2 class="slide-title">2026 완전 자동화 치팅 파이프라인 (2.5초 아키텍처)</h2>
+        <p class="slide-subtitle">수험생이 문제를 바라본 순간부터 고막으로 정답을 수신하기까지의 단계별 지연시간</p>
+      </div>
+      <div class="slide-body">
+        <div class="pipeline-wrapper">
+          <div class="pipeline-step">
+            <div class="step-num">1</div>
+            <div class="step-time">0.1 sec</div>
+            <div class="step-title">영상 획득</div>
+            <div class="step-desc">안경/단추 핀홀 카메라<br>1080p 시선 일치 캡처</div>
+          </div>
+          <div class="pipeline-arrow">➔</div>
+          <div class="pipeline-step">
+            <div class="step-num">2</div>
+            <div class="step-time">0.8 sec</div>
+            <div class="step-title">초저지연 전송</div>
+            <div class="step-desc">4G LTE / Wi-Fi 라우터<br>클라우드 릴레이 서버</div>
+          </div>
+          <div class="pipeline-arrow">➔</div>
+          <div class="pipeline-step" style="background:#eff6ff; border-color:#93c5fd;">
+            <div class="step-num" style="background:var(--primary);">3</div>
+            <div class="step-time" style="color:var(--primary);">1.2 sec</div>
+            <div class="step-title">LLM 추론</div>
+            <div class="step-desc">GPT-4o Vision API<br>수식 풀이 & 번호 도출</div>
+          </div>
+          <div class="pipeline-arrow">➔</div>
+          <div class="pipeline-step">
+            <div class="step-num">4</div>
+            <div class="step-time">0.4 sec</div>
+            <div class="step-title">초고속 TTS</div>
+            <div class="step-desc">경량 신경망 음성 합성<br>정답 번호 단답화</div>
+          </div>
+          <div class="pipeline-arrow">➔</div>
+          <div class="pipeline-step" style="background:#fef2f2; border-color:#fca5a5;">
+            <div class="step-num" style="background:var(--danger);">5</div>
+            <div class="step-time" style="color:var(--danger);">0.1 sec</div>
+            <div class="step-title">비가시 음향 전달</div>
+            <div class="step-desc">인덕션 넥루프 코일<br><strong>2mm 고막 자석 진동</strong></div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top: 10px;">
+          <div class="card">
+            <div class="card-title">왜 기존 감독관이 적발하기 어려운가?</div>
+            <ul style="padding-left:18px; color:#475569; font-size:0.9rem; line-height:1.7;">
+              <li><strong>0dB 무음 전달:</strong> 귀 외부로 새어 나오는 누설 음향이 0dB로 완전 차단됨.</li>
+              <li><strong>시선 일치(POV):</strong> 고개를 돌리거나 손을 움직일 필요 없이 문제지를 그냥 쳐다보기만 하면 됨.</li>
+              <li><strong>인간 조력자 부재:</strong> 외부 전문가와 통화할 필요 없이 AI API가 혼자 실시간 처리.</li>
+            </ul>
+          </div>
+          <div class="card danger">
+            <div class="card-title">왜 전파/금속 탐지 장비에 안 잡히는가?</div>
+            <ul style="padding-left:18px; color:#475569; font-size:0.9rem; line-height:1.7;">
+              <li><strong>패시브 자석(배터리·회로 없음):</strong> 귓속 2mm 자석은 단순 네오디뮴 쇳조각으로 RF 신호 방출 없음.</li>
+              <li><strong>비선형 접합 탐지기(NLJD) 무력화:</strong> 반도체 칩이 없어 도청 탐지기에도 반응 안 함.</li>
+              <li><strong>치아 보철물과 오인:</strong> 금속탐지기 감도를 높이면 치아 임플란트나 안경테와 구분 불가.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 11: EARPIECE MECHANISM ==================== -->
+    <section class="slide" id="slide-11">
+      <div class="slide-header">
+        <div class="badge danger">EQUIPMENT ANATOMY</div>
+        <h2 class="slide-title">초소형 고막 자석 이어폰(Magnetic Earpiece)의 동작 원리</h2>
+        <p class="slide-subtitle">전자기 유도 법칙을 활용하여 배터리와 전선 없이 작동하는 스파이 음향 기술</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="svg-illus-box">
+            <svg viewBox="0 0 380 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="380" height="280" rx="10" fill="#f8fafc"/>
+              <path d="M50 140 C100 130, 220 100, 280 140" stroke="#cbd5e1" stroke-width="28" stroke-linecap="round"/>
+              <path d="M280 120 Q290 140 280 160" stroke="#f43f5e" stroke-width="6"/>
+              <text x="295" y="145" font-family="Pretendard" font-size="12" font-weight="bold" fill="#f43f5e">고막 (Eardrum)</text>
+              <circle cx="275" cy="140" r="7" fill="#2563eb"/>
+              <text x="235" y="175" font-family="Pretendard" font-size="11" font-weight="bold" fill="#2563eb">2mm 네오디뮴 자석</text>
+              <path d="M200 230 C230 180, 250 160, 270 145" stroke="#d97706" stroke-width="3" stroke-dasharray="4 4"/>
+              <circle cx="190" cy="245" r="14" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+              <text x="120" y="270" font-family="Pretendard" font-size="11" font-weight="bold" fill="#d97706">인덕션 넥루프 전자기파</text>
+            </svg>
+          </div>
+          <div class="card">
+            <div class="card-title">기술 구조 및 탈착 방식</div>
+            <div style="display:flex; flex-direction:column; gap:12px; margin-top:8px;">
+              <p class="card-desc">
+                • <strong>발소 원리:</strong> 목에 건 루프 코일에 음성 신호 전류가 흐르면 교류 전자기장이 발생 $\rightarrow$ 고막에 밀착된 2mm 영구자석이 전자기력에 의해 직접 진동하며 고막을 울림.<br>
+                • <strong>완전 비가시성:</strong> 외이도 내부로 2cm 이상 삽입되므로 귓구멍 입구에서 육안 관찰 불가능.<br>
+                • <strong>제거 방식:</strong> 강한 자성을 가진 특수 자석 막대(Magnetic Rod)를 귓속에 넣어 꺼냄.<br>
+                • <strong>단속의 딜레마:</strong> 의료용 검이경(Otoscope)으로 직접 들여다보지 않는 한 적발 불가.
+              </p>
+            </div>
+            <div class="card-footer">
+              <span>전자회로 전무 $\rightarrow$ RF 감지 불가</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 12: SMART GLASSES COMPARISON ==================== -->
+    <section class="slide" id="slide-12">
+      <div class="slide-header">
+        <div class="badge warning">MARKET RESEARCH 01</div>
+        <h2 class="slide-title">상용 AI 스마트 안경 스펙 및 가격 비교</h2>
+        <p class="slide-subtitle">일반 소비자용으로 정식 출시된 주요 AI 안경의 가격대와 치팅 악용 잠재력</p>
+      </div>
+      <div class="slide-body">
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>제품명</th>
+                <th>주요 스펙 & AI 기능</th>
+                <th>해외 공식가</th>
+                <th>국내 유통/직구가</th>
+                <th>공식 쇼핑몰 / 링크</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Ray-Ban Meta Gen 2</strong></td>
+                <td>12MP 카메라, 오픈이어 스피커, Meta AI 시각인식, 촬영 LED 탑재</td>
+                <td>$299 ~ $379</td>
+                <td>65만 ~ 75만 원</td>
+                <td>
+                  <a href="https://www.meta.com/smart-glasses/" target="_blank" class="link-source">
+                    Meta 공식몰
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Solos AirGo 3 / Vision</strong></td>
+                <td>30g 초경량, 모듈형 탈부착 카메라, GPT-4o 연동 실시간 문답</td>
+                <td>$249 ~ $299</td>
+                <td>42만 ~ 60만 원</td>
+                <td>
+                  <a href="https://solosglasses.com" target="_blank" class="link-source">
+                    Solos 공식몰
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Even Realities G1</strong></td>
+                <td>40g, 녹색 단색 텍스트 HUD 투사 프롬프터, <strong>카메라 없음</strong></td>
+                <td>$599 ~ $699</td>
+                <td>85만 ~ 100만 원</td>
+                <td>
+                  <a href="https://www.evenrealities.com" target="_blank" class="link-source">
+                    Even Realities 몰
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Rokid Glasses</strong></td>
+                <td>12MP 카메라, Micro-LED 화면 투사, 실시간 다국어 번역 디스플레이</td>
+                <td>$399 ~ $499</td>
+                <td>70만 ~ 99만 원</td>
+                <td>
+                  <a href="https://global.rokid.com" target="_blank" class="link-source">
+                    Rokid 공식몰
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>알리산 저가 오디오 안경</strong></td>
+                <td>카메라 없음, 오픈이어 스피커, 앱 연동 ChatGPT/DeepSeek 음성 문답</td>
+                <td><strong>$15 ~ $35</strong></td>
+                <td>2만 ~ 5만 원</td>
+                <td>
+                  <a href="https://www.aliexpress.com/wholesale?SearchText=audio+smart+glasses" target="_blank" class="link-source">
+                    AliExpress 검색
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 13: CHEATING HARDWARE MARKET ==================== -->
+    <section class="slide" id="slide-13">
+      <div class="slide-header">
+        <div class="badge danger">MARKET RESEARCH 02</div>
+        <h2 class="slide-title">암시장/쇼핑몰 특수 치팅 장비 유통 및 가격 실태</h2>
+        <p class="slide-subtitle">치팅 목적의 단추 카메라, 패시브 자석 이어폰, GSM 넥루프의 구매 경로</p>
+      </div>
+      <div class="slide-body">
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>장비 유형</th>
+                <th>주요 기술 스펙</th>
+                <th>해외 직구가</th>
+                <th>국내 유통/암시장가</th>
+                <th>플랫폼 규제 현황 & 링크</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>단추형 핀홀 카메라 (Button Cam)</strong></td>
+                <td>단추 위장 캡 5종 교체형, 1080p, Wi-Fi P2P 또는 4G LTE 직결</td>
+                <td>$18 ~ $110</td>
+                <td>18만 ~ 28만 원</td>
+                <td>
+                  <a href="https://www.aliexpress.com/wholesale?SearchText=button+camera+wifi" target="_blank" class="link-source">
+                    AliExpress 직구
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                  </a>
+                  <span style="font-size:0.75rem; color:#dc2626;">(쿠팡/네이버 차단)</span>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>패시브 나노 자석 이어폰 키트</strong></td>
+                <td>2~3mm 네오디뮴 자석, 인덕션 넥루프, 자석 제거봉 포함</td>
+                <td>$12 ~ $30</td>
+                <td>4만 ~ 8만 원</td>
+                <td>
+                  <a href="https://www.aliexpress.com/wholesale?SearchText=magnetic+earpiece+inductive+loop" target="_blank" class="link-source">
+                    AliExpress 직구
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>독립형 GSM 박스/넥루프</strong></td>
+                <td>나노 유심 삽입, 외부 전화 수신 시 무음·무진동 자동 연결(Auto-Answer)</td>
+                <td>$50 ~ $130</td>
+                <td>15만 ~ 30만 원</td>
+                <td>
+                  <a href="https://www.amazon.com/s?k=spy+earpiece+gsm+box" target="_blank" class="link-source">
+                    아마존 직구
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>올인원 치팅 세트 (Full Kit)</strong></td>
+                <td>단추카메라 + 4G 모듈 + GSM 넥루프 + 자석 이어폰 풀세트</td>
+                <td>$85 ~ $120</td>
+                <td>25만 ~ 60만 원 (브로커)</td>
+                <td>
+                  <a href="https://www.taobao.com" target="_blank" class="link-source">
+                    타오바오 검색 우회
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 14: GLOBAL LAWS & PUNISHMENTS ==================== -->
+    <section class="slide" id="slide-14">
+      <div class="slide-header">
+        <div class="badge">LEGAL FRAMEWORK</div>
+        <h2 class="slide-title">해외 정부의 법적 규제 및 형벌 수위 비교</h2>
+        <p class="slide-subtitle">국가적 차원의 신뢰 위기로 규정하고 최고 수준의 징벌적 형벌 도입</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="card danger">
+            <div class="card-title">인도: 2024 공공시험법</div>
+            <div class="badge danger" style="margin-bottom:8px;">세계 최고 형량</div>
+            <p class="card-desc">
+              • 개인 치팅: 징역 3~10년<br>
+              • 조직적 범죄: 징역 5~10년 및 <strong>벌금 최소 1억 루피(약 16.5억 원)</strong><br>
+              • 범죄 연루 자산 전액 몰수<br>
+              • 협력 IT 업체 4년간 공공 입찰 영구 퇴출
+            </p>
+            <div class="card-footer">
+              <a href="https://pib.gov.in" target="_blank" class="link-source">
+                인도 법무부 법률 원문
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="card warning">
+            <div class="card-title">중국: 형법 제284조의1</div>
+            <div class="badge warning" style="margin-bottom:8px;">국가고시 부정죄</div>
+            <p class="card-desc">
+              • 가오카오/공무원 시험 치팅: <strong>최고 징역 7년</strong> 및 벌금<br>
+              • 당해 성적 무효 + 1~3년간 시험 응시 자격 전면 박탈<br>
+              • 시험 중 빅테크 AI 검색 서비스 강제 일시 차단(Blackout)
+            </p>
+            <div class="card-footer">
+              <a href="http://www.npc.gov.cn" target="_blank" class="link-source">
+                전국인민대표대회 법전
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="card accent">
+            <div class="card-title">EU: AI Act (고위험 분류)</div>
+            <div class="badge" style="margin-bottom:8px;">감정인식 AI 금지</div>
+            <p class="card-desc">
+              • AI 원격 시험 감독을 '고위험 AI'로 분류<br>
+              • 2025.2 발효: <strong>수험생 감정인식(긴장도/동공) AI 전면 불법화</strong><br>
+              • 인간 개입(Human-in-the-loop) 의무화: AI 단독 불합격 판정 불가
+            </p>
+            <div class="card-footer">
+              <a href="https://artificialintelligenceact.eu" target="_blank" class="link-source">
+                EU AI Act 공식 포털
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 15: JAMMING & RF DETECTION LIMITS ==================== -->
+    <section class="slide" id="slide-15">
+      <div class="slide-header">
+        <div class="badge danger">TECHNICAL BARRIERS</div>
+        <h2 class="slide-title">전파 차단기(Jammer) 및 탐지 장비의 현실적 한계</h2>
+        <p class="slide-subtitle">왜 기술적 방어만으로는 시험장 치팅을 100% 차단할 수 없는가?</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card danger">
+            <div class="card-title">1. 전파 차단기 (RF Jammer) 운용의 법적·현실적 장벽</div>
+            <p class="card-desc" style="line-height: 1.7;">
+              • <strong>전파법 위반:</strong> 한국(전파법 제82조), 미국(FCC 규정), 유럽 등 대다수 국가에서 민간 시설 내 전파 차단기 운용은 <strong>형사처벌 대상(원칙적 불법)</strong>.<br>
+              • <strong>응급 통신 마비:</strong> 시험장 주변 병원 응급실, 119 구급대, 경찰 긴급통신망까지 함께 먹통이 되는 치명적 안전 사고 위험 존재.<br>
+              • <strong>오프라인 녹화 수법:</strong> 실시간 스트리밍 대신 안경 내부에 저장 후 휴식시간 유출하는 수법에는 무용지물.
+            </p>
+            <div class="card-footer">
+              <a href="https://www.fcc.gov/general/jammer-enforcement" target="_blank" class="link-source">
+                미국 FCC 전파차단기 규제
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">2. 전파/금속 탐지 장비의 기술적 한계</div>
+            <p class="card-desc" style="line-height: 1.7;">
+              • <strong>초소형 네오디뮴 자석의 무반응:</strong> 반도체 칩이 전혀 없어 비선형 접합 탐지기(NLJD)나 RF 스캐너에 반응 0%.<br>
+              • <strong>금속탐지기 오탐률 폭증:</strong> 2mm 자석을 잡으려면 탐지 감도를 극대화해야 하는데, 이 경우 <strong>치아 보철물(임플란트), 속옷 와이어, 벨트, 신발 징</strong> 등에 전부 경보가 울려 통제가 불가능해짐.
+            </p>
+            <div class="card-footer">
+              <span>결론: 하드웨어 탐지만으로는 한계 명확</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 16: PARADIGM SHIFT - PEN & ORAL ==================== -->
+    <section class="slide" id="slide-16">
+      <div class="slide-header">
+        <div class="badge accent">ASSESSMENT INNOVATION 01</div>
+        <h2 class="slide-title">평가 패러다임의 대전환: 손글씨 지필시험 & 구술 면접</h2>
+        <p class="slide-subtitle">기만 불가능한 신뢰성을 확보하기 위해 아날로그 검증 방식으로 복귀하는 글로벌 대학들</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">1. 손글씨 지필시험(Pen-and-Paper) 전격 회귀</div>
+            <p class="card-desc" style="line-height: 1.7;">
+              • <strong>비대면 과제 폐지:</strong> 온라인 리포트 제출의 70% 이상이 AI로 작성됨에 따라 변별력 상실.<br>
+              • <strong>호주 Go8 & 미국 아이비리그:</strong> 시험장에서 감독관 입회하에 직접 손글씨로 에세이를 작성하는 <strong>'블루북(Blue Book)' 지필평가</strong> 비중 80%로 확대.<br>
+              • <strong>SAT/ACT 표준화 시험 의무화:</strong> MIT, 예일, 다트머스 등 미국 명문대들이 시험성적 제출 면제를 철회하고 현장 대면 시험 의무화 복원.
+            </p>
+            <div class="card-footer">
+              <a href="https://go8.edu.au" target="_blank" class="link-source">
+                호주 Group of Eight 성명
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="card accent">
+            <div class="card-title">2. 대면 구술시험 (Viva Voce)의 부활</div>
+            <p class="card-desc" style="line-height: 1.7;">
+              • <strong>핵심 원칙:</strong> "AI가 논문이나 코드를 대신 써줄 수는 있어도, 1:1 대면 구술 면접에서 논리를 대신 말할 수는 없다."<br>
+              • 서면 평가 후 평가관이 무작위로 작성 과정의 논리 전개, 오류 대처 방식을 질의응답하는 <strong>1:1 구술 변론(Oral Defense)</strong> 도입 확산.<br>
+              • 즉각적인 반응 속도와 사고 체계를 평가하여 완전한 진위 검증 달성.
+            </p>
+            <div class="card-footer">
+              <span>기만 불가능한 실시간 사고력 검증</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 17: AI-INCLUSIVE ASSESSMENT ==================== -->
+    <section class="slide" id="slide-17">
+      <div class="slide-header">
+        <div class="badge accent">ASSESSMENT INNOVATION 02</div>
+        <h2 class="slide-title">AI 전제형 평가(Authentic Assessment) 모델</h2>
+        <p class="slide-subtitle">AI 사용을 원천 금지하는 대신, AI를 활용한 비판적 검증 역량을 평가하는 새로운 문항 구조</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">전통적 평가 vs AI 전제형 평가 비교</div>
+            <div class="table-container" style="border:none; box-shadow:none;">
+              <table>
+                <thead>
+                  <tr><th>구분</th><th>과거 전통적 평가</th><th>AI 전제형 평가 (New)</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>목표</strong></td>
+                    <td>지식 암기 및 텍스트 재생산</td>
+                    <td>AI 생성물의 비판적 오류 검증</td>
+                  </tr>
+                  <tr>
+                    <td><strong>AI 허용</strong></td>
+                    <td>원천 금지 (치팅 간주)</td>
+                    <td>사전 활용 전제 의무화</td>
+                  </tr>
+                  <tr>
+                    <td><strong>문항 예시</strong></td>
+                    <td>"A 이론의 장단점을 서술하라"</td>
+                    <td>"AI가 작성한 A 이론 보고서의 3가지 논리적 오류를 찾아 반박하라"</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer">
+              <a href="https://www.teqsa.gov.au" target="_blank" class="link-source">
+                호주 TEQSA 인공지능 평가 가이드
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="card accent">
+            <div class="card-title">AI 역량 검증 3단계 프레임워크</div>
+            <div style="display:flex; flex-direction:column; gap:12px; margin-top:8px;">
+              <div style="background:#f0f9ff; padding:12px; border-radius:8px; border-left:4px solid var(--accent);">
+                <strong>1. 프롬프트 엔지니어링 역량:</strong> 문제를 해결하기 위해 AI에게 어떤 맥락과 제약 조건을 부여하는지 평가.
+              </div>
+              <div style="background:#f0f9ff; padding:12px; border-radius:8px; border-left:4px solid var(--accent);">
+                <strong>2. 환각(Hallucination) 감별력:</strong> AI가 생성한 허위 사실과 잘못된 수식을 팩트체크하는 능력 측정.
+              </div>
+              <div style="background:#f0f9ff; padding:12px; border-radius:8px; border-left:4px solid var(--accent);">
+                <strong>3. 윤리적 재구성:</strong> AI 결과물에 인문학적·윤리적 가치를 반영해 최종 솔루션으로 고도화하는 역량 검증.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 18: KOREA 3 STRATEGIES ==================== -->
+    <section class="slide" id="slide-18">
+      <div class="slide-header">
+        <div class="badge">POLICY RECOMMENDATIONS</div>
+        <h2 class="slide-title">대한민국 공공·교육 평가 체계를 위한 3대 전략</h2>
+        <p class="slide-subtitle">법률 제정, 시험장 물리 보안 고도화, 평가 문항 혁신의 입체적 다층 방어 구축</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="card danger">
+            <div class="card-title">1. 법제도 정비 & 직구 규제</div>
+            <p class="card-desc" style="line-height:1.7;">
+              • <strong>『공공시험 부정행위 방지 특별법』 제정:</strong> 국가고시·공인시험 치팅에 징역형 하한선 및 범죄수익 몰수 신설.<br><br>
+              • <strong>전파법 사각지대 해소:</strong> 1인 1대 직구 면제 조항에서 핀홀 카메라·유도 넥루프를 목록통관 배제 품목으로 지정.
+            </p>
+            <div class="card-footer"><span>사법적 억제력 극대화</span></div>
+          </div>
+          <div class="card warning">
+            <div class="card-title">2. 시험장 보안 프로토콜 현대화</div>
+            <p class="card-desc" style="line-height:1.7;">
+              • <strong>안경 전수 검사대 운영:</strong> 힌지 두께, 렌즈 홀, 무게 확인 표준화 지침 수립.<br><br>
+              • <strong>의료용 검이경 귓속 검사:</strong> 고막 밀착 자석 이어폰 적발을 위한 선별적 이경 검사 권한 부여.<br><br>
+              • <strong>실시간 전파 스캐너:</strong> 고사장 내 비인가 4G/Wi-Fi 신호 스펙트럼 모니터링.
+            </p>
+            <div class="card-footer"><span>물리적 다층 방어선</span></div>
+          </div>
+          <div class="card accent">
+            <div class="card-title">3. 평가 패러다임 근본 전환</div>
+            <p class="card-desc" style="line-height:1.7;">
+              • <strong>단순 암기 객관식 축소:</strong> 지필 5지선다는 스마트 안경 앞에서 변별력 상실.<br><br>
+              • <strong>대면 구술(Viva) & 인바스켓 실기:</strong> 공공 채용 및 입시에서 심층 구술 면접 비중 대폭 확대.<br><br>
+              • <strong>AI 오류 검증형 출제:</strong> 생성형 AI 결과물의 비판적 분석 역량 검증.
+            </p>
+            <div class="card-footer"><span>평가 신뢰성 수호</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 19: ROADMAP ==================== -->
+    <section class="slide" id="slide-19">
+      <div class="slide-header">
+        <div class="badge success">ACTION ROADMAP</div>
+        <h2 class="slide-title">보안 프로토콜 실행 로드맵 (2026 ~ 2028)</h2>
+        <p class="slide-subtitle">단기(법제화) $\rightarrow$ 중기(장비 구축) $\rightarrow$ 장기(평가 체계 개편) 단계별 실행 전략</p>
+      </div>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-title">단기: 법률 및 검사 지침 (2026)</div>
+            <div class="badge" style="margin-bottom:8px;">즉시 실행 과제</div>
+            <p class="card-desc" style="line-height:1.7;">
+              • 시험장 안경 및 시계 반입 엄격 지침(Strict Possession Rule) 배포<br>
+              • 의료용 검이경 구비 및 감독관 의심 수험생 귓속 검사 절차 신설<br>
+              • 관세청 공조: 알리/타오바오산 핀홀 단추 카메라 직구 정밀 통관
+            </p>
+            <div class="card-footer"><span>지침 표준화</span><span>통관 강화</span></div>
+          </div>
+          <div class="card warning">
+            <div class="card-title">중기: 기술 인프라 구축 (2027)</div>
+            <div class="badge warning" style="margin-bottom:8px;">인프라 고도화</div>
+            <p class="card-desc" style="line-height:1.7;">
+              • 『공공시험 부정행위 방지 특별법』 입법 완료<br>
+              • 국가고시 시험장에 비인가 전파 스캐너 및 광학 안경 검사대 도입<br>
+              • 사설 시험 주관사 대상 부정 장비 판별 교육 프로그램 정례화
+            </p>
+            <div class="card-footer"><span>특별법 제정</span><span>전파 탐지 도입</span></div>
+          </div>
+          <div class="card accent">
+            <div class="card-title">장기: 평가 패러다임 완성 (2028~)</div>
+            <div class="badge success" style="margin-bottom:8px;">근본적 정착</div>
+            <p class="card-desc" style="line-height:1.7;">
+              • 국가 자격시험 및 대학 입시에서 객관식 지필 비중 30% 이하 축소<br>
+              • 심층 대면 구술 면접(Viva Voce) 및 인바스켓 실기 평가 전면 확대<br>
+              • AI 역량 검증형 문항 출제 표준 가이드라인 정착
+            </p>
+            <div class="card-footer"><span>구술 중심 전환</span><span>평가 혁신 완성</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 20: CONCLUSION ==================== -->
+    <section class="slide" id="slide-20">
+      <div class="cover-content" style="align-items: center; text-align: center; margin: 0 auto;">
+        <div class="badge">CONCLUSION</div>
+        <h1 class="cover-title" style="font-size: 3rem;">"기술적 방어만으로는 AI 치팅을 막을 수 없다"</h1>
+        <p class="cover-desc" style="max-width: 820px; margin-bottom: 30px;">
+          완전 비가시화된 초소형 하드웨어와 2.5초의 AI 파이프라인 앞에서<br>
+          단순한 감독관 육안 감시나 전파 차단 기술에만 의존하는 시대는 끝났습니다.<br><br>
+          <strong>‘강력한 사법적 억제 + 물리적 신체검사 + 구술·실기 중심의 평가 혁신’</strong>이 결합된<br>
+          종합 다층 방어 체계만이 시험과 교육의 공정성을 지켜낼 수 있습니다.
+        </p>
+        <div style="display:flex; gap:16px;">
+          <button class="btn-fullscreen" onclick="location.reload();" style="padding: 10px 24px; font-size: 0.95rem;">
+            처음부터 다시 보기 (Home)
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Bottom Floating Control Bar -->
+  <div class="controls-bar">
+    <button class="btn-nav" id="btnPrev" title="이전 슬라이드 (Left Arrow)">◀</button>
+    <div class="page-indicator">
+      <span id="currentSlideNum">01</span>
+      <span class="total">/</span>
+      <span class="total" id="totalSlideNum">20</span>
+    </div>
+    <button class="btn-nav" id="btnNext" title="다음 슬라이드 (Right Arrow / Space)">▶</button>
+    <button class="btn-fullscreen" id="btnFullscreen" title="전체화면 전환 (F)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+      Full Screen
+    </button>
+  </div>
+
+  <!-- Keyboard Shortcuts Hint -->
+  <div class="kbd-hint">
+    <span>이동: <kbd>←</kbd> <kbd>→</kbd> <kbd>Space</kbd></span>
+    <span>전체화면: <kbd>F</kbd></span>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const progressBar = document.getElementById('progressBar');
+    const currentSlideNum = document.getElementById('currentSlideNum');
+    const totalSlideNum = document.getElementById('totalSlideNum');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+    const btnFullscreen = document.getElementById('btnFullscreen');
+
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+
+    totalSlideNum.textContent = totalSlides.toString().padStart(2, '0');
+
+    function updateSlide(index) {
+      if (index < 0) index = 0;
+      if (index >= totalSlides) index = totalSlides - 1;
+      currentIndex = index;
+
+      slides.forEach((slide, idx) => {
+        slide.classList.toggle('active', idx === currentIndex);
+      });
+
+      // Update HUD
+      currentSlideNum.textContent = (currentIndex + 1).toString().padStart(2, '0');
+      const progress = ((currentIndex + 1) / totalSlides) * 100;
+      progressBar.style.width = `${progress}%`;
+
+      btnPrev.disabled = currentIndex === 0;
+      btnNext.disabled = currentIndex === totalSlides - 1;
+      btnPrev.style.opacity = currentIndex === 0 ? '0.3' : '1';
+      btnNext.style.opacity = currentIndex === totalSlides - 1 ? '0.3' : '1';
+    }
+
+    function nextSlide() {
+      if (currentIndex < totalSlides - 1) {
+        updateSlide(currentIndex + 1);
+      }
+    }
+
+    function prevSlide() {
+      if (currentIndex > 0) {
+        updateSlide(currentIndex - 1);
+      }
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.warn(`Error attempting to enable fullscreen: ${err.message}`);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // Event Listeners
+    btnPrev.addEventListener('click', prevSlide);
+    btnNext.addEventListener('click', nextSlide);
+    btnFullscreen.addEventListener('click', toggleFullscreen);
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        updateSlide(0);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        updateSlide(totalSlides - 1);
+      } else if (e.key.toLowerCase() === 'f') {
+        e.preventDefault();
+        toggleFullscreen();
+      }
+    });
+
+    // Touch swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    document.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, false);
+
+    document.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchEndX < touchStartX - 50) {
+        nextSlide();
+      } else if (touchEndX > touchStartX + 50) {
+        prevSlide();
+      }
+    }, false);
+
+    // Initialize
+    updateSlide(0);
+  </script>
+</body>
+</html>
